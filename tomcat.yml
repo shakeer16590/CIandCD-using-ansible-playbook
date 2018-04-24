@@ -1,0 +1,8 @@
+---
+- name: install tomcat 7
+  hosts: all
+  become: yes
+  roles:
+   - tomcat
+
+...
