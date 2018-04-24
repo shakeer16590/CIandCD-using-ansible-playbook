@@ -1,0 +1,30 @@
+---
+- name: installation on prodserver
+  hosts: prodserver
+  tasks:
+   - name: installation of git and maven 
+     apt:
+      name: "{{item.a}}"
+      state: present
+      update_cache: "{{item.b}}"
+     with_items:
+      - {a: git,b: yes}
+      - {a: maven,b: yes}
+- name: installation on qaserver
+  hosts: qaserver
+  tasks:
+   - name: installing tomcat-users.xml
+     apt:
+      name: "{{item.a}}"
+      state: present
+      update_cache: "{{item.b}}"
+     with_items:
+      - {a: tomcat7,b: no}
+      - {a: tomcat7-admin,b: yes}
+- name: edit_tomcat-users.xml
+  hosts: qaserver
+  tasks:
+   - name: edit tomcat-users.xml
+     copy:
+      src: /etc/tomcat7/tomcat-users.xml
+      dest: /etc/tomcat7/tomcat-users.xml

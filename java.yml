@@ -1,0 +1,16 @@
+---
+- name: install Oracle Java  
+  hosts: all
+  tasks:
+   - name: add repo for Oracle Java 
+     apt_repository:
+      repo: ppa:webupd8team/java
+      state: present
+   - name: update package repository 
+     apt: 
+      update_cache: yes
+   - name: install Oracle JDK 
+     apt:
+      name: default-jdk
+      state: present
+      

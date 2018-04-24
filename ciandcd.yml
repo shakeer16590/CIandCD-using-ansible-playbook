@@ -1,0 +1,34 @@
+---
+- name: Continous Integration and Continous Download with Ansible
+  hosts: prodserver
+  tasks:
+   - name: Download development code from git repository
+     git:
+      repo: https://github.com/selenium-saikrishna/maven.git
+      dest: /home/ubuntu/mygit
+   - name: building_artifact
+     shell: cd /home/ubuntu/mygit; mvn package
+- name: fetch the artifact from target folder
+  hosts: prodserver
+  tasks:
+   - fetch:
+      src: /home/ubuntu/mygit/webapp/target/webapp.war
+      dest: /home/ubuntu/
+- name: copy the artifact to the tomcat server
+  hosts: qaserver
+  tasks:
+   - copy:
+      src: /home/ubuntu/172.31.20.130/home/ubuntu/mygit/webapp/target/webapp.war
+      dest: /var/lib/tomcat7/webapps/qaenv.war
+- name: execute testing program
+  hosts: qaserver
+  tasks:
+   - shell: echo "success"
+- name: deploy in prod server
+  hosts: qaserver
+  tasks:
+   - copy:
+      src: /home/ubuntu/172.31.20.130/home/ubuntu/mygit/webapp/target/webapp.war
+      dest: /var/lib/tomcat7/webapps/prodenv.war
+ 
+...
