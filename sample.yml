@@ -1,0 +1,7 @@
+---
+- name: Role apache2
+  hosts: all
+  roles:
+   - apache
+
+...
